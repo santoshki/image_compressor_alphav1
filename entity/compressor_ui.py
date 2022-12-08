@@ -11,8 +11,8 @@ class MyFrame(wx.Frame):
         self.browse_image_file_label.SetLabel("Browse Image file")
         self.image_browse_button = wx.Button(panel, label='Browse', pos=(25, 100))
         self.textbox = wx.TextCtrl(panel, size=(250, -1), pos=(100, 100))
-        self.compress_action_button = wx.Button(panel, label='Compress', pos=(150, 150))
-        self.progress_bar = wx.Gauge(panel, size=(150, 25), pos=(200, 300))
+        self.compress_action_button = wx.Button(panel, label='Compress', pos=(150, 140))
+        self.progress_bar = wx.Gauge(panel, size=(180, 10), pos=(95, 180))
         self.image_browse_button.Bind(wx.EVT_BUTTON, self.on_click_image_browse)
         self.compress_action_button.Bind(wx.EVT_BUTTON, self.on_click_compress)
         self.Show()
@@ -20,24 +20,25 @@ class MyFrame(wx.Frame):
     def on_click_image_browse(self, event):
         try:
             print("Image upload button pressed.\nOpening File selection dialog box...")
-            select_file_dialog_ui = wx.FileDialog(frame, "Open", "", "", "", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
-            select_file_dialog_ui.ShowModal()
+            self.select_file_dialog_ui = wx.FileDialog(frame, "Open", "", "", "", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+            self.select_file_dialog_ui.ShowModal()
             print("Image File selected")
-            print("File name:", select_file_dialog_ui.GetFilename())
-            filepath = select_file_dialog_ui.GetPath()
-            filepath_str = str(filepath)
-            filepath_addr = filepath_str.replace(str(select_file_dialog_ui.GetFilename()), '')
-            print("File path:", filepath_addr)
-            CompressionEngine.image_compression(filepath_addr, select_file_dialog_ui.GetFilename())
-            select_file_dialog_ui.Destroy()
+            print("File name:", self.select_file_dialog_ui.GetFilename())
+            self.filepath = self.select_file_dialog_ui.GetPath()
+            self.filepath_str = str(self.filepath)
+            self.filepath_addr = self.filepath_str.replace(str(self.select_file_dialog_ui.GetFilename()), '')
+            print("File path:", self.filepath_addr)
+            self.textbox.SetLabel(str(self.select_file_dialog_ui.GetPath()))
         except Exception as e:
             print("Exception occurred:", e)
 
     def on_click_compress(self, event):
         try:
-            pass
+            CompressionEngine.image_compression(self.filepath_addr, self.select_file_dialog_ui.GetFilename())
+            self.select_file_dialog_ui.Destroy()
         except Exception as e:
             print("Exception occurred:", e)
+
 
 if __name__ == '__main__':
     app = wx.App()
