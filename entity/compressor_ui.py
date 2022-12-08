@@ -11,9 +11,17 @@ class MyFrame(wx.Frame):
         self.browse_image_file_label.SetLabel("Browse Image file")
         self.image_browse_button = wx.Button(panel, label='Browse', pos=(25, 100))
         self.textbox = wx.TextCtrl(panel, size=(250, -1), pos=(100, 100))
-        self.compress_action_button = wx.Button(panel, label='Compress', pos=(150, 140))
-        self.progress_bar = wx.Gauge(panel, size=(180, 10), pos=(95, 180))
+        self.compression_ratio_selection_label = wx.StaticText(panel, id=1, label="Old Label.", pos=(25, 150),
+                                                               size=wx.DefaultSize, style=0, name="statictext")
+        self.compression_ratio_selection_label.SetLabel("Select Compression Ratio")
+        self.compression_ratio_selection = wx.SpinCtrl(panel, -1, '', (190, 150), (60, -1))
+        self.compression_ratio_selection.SetRange(0, 100)
+        self.compression_ratio_selection.SetValue(0)
+        self.compress_action_button = wx.Button(panel, label='Compress', pos=(150, 190))
+        self.progress_bar = wx.Gauge(panel, size=(180, 10), pos=(95, 220))
         self.image_browse_button.Bind(wx.EVT_BUTTON, self.on_click_image_browse)
+
+
         self.compress_action_button.Bind(wx.EVT_BUTTON, self.on_click_compress)
         self.Show()
 
